@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matrix.eu/schemas/MATRIX-v0.2-procurement.ext.schema.json",
+  "title": "MATRIX Procurement Domain Extension v0.2",
+  "description": "Domain extension for the MATRIX Core Event Schema v0.2 supporting AI-assisted public-sector procurement review. Activated when the core field domain_extension equals procurement. Designed to preserve procurement integrity, institutional accountability, traceability, auditability, contestability, fail-closed governance, and public trust. Privacy-by-design: no raw personal data, no confidential supplier secrets, no discriminatory supplier scoring, and no opaque exclusion without human review.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "procurement_case_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique non-personal identifier of the procurement review case under MATRIX governance. Must not encode personal or supplier-confidential data."
+    },
+    "tender_reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_\\-:./]+$",
+      "description": "Pseudonymous, public, or institutional reference identifier for the tender or call for proposals. Must not contain confidential commercial content."
+    },
+    "supplier_reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^(NOT_APPLICABLE|[A-Za-z0-9_\\-:./]+)$",
+      "description": "Pseudonymous reference identifier of the candidate supplier or economic operator. Must not include personal data of natural persons or trade secrets. Use NOT_APPLICABLE when the procurement stage does not involve a specific supplier."
+    },
+    "procurement_stage": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "market_consultation",
+        "tender_publication",
+        "tender_evaluation",
+        "supplier_qualification",
+        "award_decision",
+        "contract_signature",
+        "contract_execution",
+        "contract_modification",
+        "post_award_audit",
+        "closure"
+      ],
+      "description": "Stage of the public procurement lifecycle in which the AI-supported review event takes place."
+    },
+    "risk_indicator": {
+      "type": "object",
+      "description": "Structured non-discriminatory risk indicators produced by the AI-supported review. Indicators must be explainable and reviewable by humans; raw scores alone must not justify exclusion.",
+      "additionalProperties": false,
+      "properties": {
+        "risk_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "moderate",
+            "high",
+            "critical"
+          ],
+          "description": "Aggregated risk level associated with the tender or supplier file under review."
+        },
+        "risk_categories": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "collusion_indicator",
+              "bid_rigging_indicator",
+              "abnormally_low_offer",
+              "single_bidder_pattern",
+              "specification_tailoring",
+              "conflict_of_interest",
+              "sanctions_or_exclusion_list",
+              "beneficial_ownership_opacity",
+              "subcontracting_chain_opacity",
+              "financial_instability",
+              "technical_capacity_gap",
+              "esg_or_sustainability_concern",
+              "data_protection_concern",
+              "cybersecurity_concern",
+              "fundamental_rights_concern",
+              "other"
+            ],
+            "description": "Controlled category of procurement risk identified during AI-supported review."
+          },
+          "description": "List of identified procurement risk categories, drawn from a controlled vocabulary."
+        },
+        "explanation_reference": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Reference, URI, or document ID to a human-readable explanation of how the risk indicator was produced, supporting transparency and contestability."
+        }
+      },
+      "required": [
+        "risk_level",
+        "risk_categories"
+      ]
+    },
+    "compliance_score": {
+      "type": "object",
+      "description": "Structured compliance assessment of the supplier or tender against legal and regulatory procurement requirements. Must not be used as the sole basis for exclusion without human review.",
+      "additionalProperties": false,
+      "properties": {
+        "score_value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Normalized compliance score in the range 0 to 1, where 1 indicates full assessed compliance with applicable rules."
+        },
+        "score_scale": {
+          "type": "string",
+          "enum": [
+            "normalized_0_1"
+          ],
+          "description": "Scale used for the compliance score. Restricted to a normalized 0 to 1 scale to prevent opaque or discriminatory scoring."
+        },
+        "compliance_status": {
+          "type": "string",
+          "enum": [
+            "compliant",
+            "minor_deviation",
+            "major_deviation",
+            "non_compliant",
+            "indeterminate"
+          ],
+          "description": "Categorical compliance assessment outcome."
+        },
+        "legal_basis_reference": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "Reference to applicable legal acts, directives, regulations, procurement rules, or institutional procedures."
+          },
+          "description": "Legal bases against which compliance is evaluated."
+        }
+      },
+      "required": [
+        "score_value",
+        "score_scale",
+        "compliance_status"
+      ]
+    },
+    "conflict_of_interest_flag": {
+      "type": "object",
+      "description": "Indicator of potential or confirmed conflicts of interest detected during procurement review. Personal data of natural persons must not be embedded; only pseudonymous role references are permitted.",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "none_detected",
+            "potential",
+            "confirmed",
+            "mitigated",
+            "unresolved"
+          ],
+          "description": "Status of conflict-of-interest detection for this procurement event."
+        },
+        "role_reference": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Pseudonymous reference to the institutional role involved, without identifying natural persons."
+        },
+        "mitigation_measure": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Description or reference to mitigation measures applied, such as recusal, reassignment, or additional oversight."
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "procurement_integrity_status": {
+      "type": "string",
+      "enum": [
+        "integrity_verified",
+        "integrity_under_review",
+        "integrity_concern_raised",
+        "integrity_breach_suspected",
+        "integrity_breach_confirmed",
+        "not_assessed"
+      ],
+      "description": "Overall procurement integrity status for the event, reflecting institutional assessment of fairness, transparency, and lawfulness."
+    },
+    "human_procurement_validation": {
+      "type": "object",
+      "description": "Mandatory human-in-the-loop validation record. Public authority decisions must not be fully automated; a qualified human reviewer must validate AI-supported outputs.",
+      "additionalProperties": false,
+      "properties": {
+        "validation_status": {
+          "type": "string",
+          "enum": [
+            "validated",
+            "validated_with_modifications",
+            "rejected",
+            "pending",
+            "escalated"
+          ],
+          "description": "Outcome of the human review of the AI-supported procurement assessment."
+        },
+        "validator_role": {
+          "type": "string",
+          "enum": [
+            "procurement_officer",
+            "evaluation_committee_member",
+            "legal_reviewer",
+            "compliance_officer",
+            "internal_auditor",
+            "senior_authorizing_officer",
+            "oversight_delegate"
+          ],
+          "description": "Institutional role of the human validator. Names of natural persons must not be stored here."
+        },
+        "validation_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of the human validation event."
+        },
+        "validation_notes_reference": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Reference, URI, or document ID to the structured human validation notes stored in the institutional record system."
+        }
+      },
+      "required": [
+        "validation_status",
+        "validator_role",
+        "validation_timestamp"
+      ]
+    },
+    "oversight_body_status": {
+      "type": "object",
+      "description": "Status of independent oversight body involvement, such as a procurement review authority, supreme audit institution, anti-corruption authority, or internal oversight function.",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "not_required",
+            "informed",
+            "consulted",
+            "under_review",
+            "decision_issued",
+            "remediation_ordered"
+          ],
+          "description": "State of oversight body engagement for this procurement event."
+        },
+        "oversight_body_reference": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Institutional reference of the oversight body, such as legal name, internal registry identifier, or oversight function reference."
+        },
+        "decision_reference": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Reference to the formal oversight decision document, if issued."
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "appeal_or_contestation_status": {
+      "type": "object",
+      "description": "Record of contestability mechanisms exercised by suppliers or other legitimate parties, ensuring the right to appeal or contest AI-supported procurement decisions.",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "no_appeal",
+            "appeal_filed",
+            "appeal_under_review",
+            "appeal_upheld",
+            "appeal_rejected",
+            "appeal_withdrawn",
+            "judicial_review_pending",
+            "judicial_review_concluded"
+          ],
+          "description": "Current status of any appeal or contestation related to this procurement event."
+        },
+        "appeal_reference": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Pseudonymous reference identifier of the appeal or contestation case."
+        },
+        "remedy_applied": {
+          "type": "string",
+          "enum": [
+            "none",
+            "reassessment",
+            "correction",
+            "annulment",
+            "compensation",
+            "procedural_remediation",
+            "other"
+          ],
+          "description": "Type of remedy applied as a result of the appeal, if any."
+        }
+      },
+      "required": [
+        "status"
+      ]
+    },
+    "audit_trail_reference": {
+      "type": "string",
+      "description": "Reference or URI to the immutable tamper-evident audit trail entry associated with this procurement event, stored in the MATRIX institutional traceability layer.",
+      "minLength": 1
+    },
+    "fail_closed_procurement_reason": {
+      "type": "object",
+      "description": "If the system halts, blocks, or refuses to issue an AI-supported procurement output, this field records the fail-closed governance rationale. Required when the core event indicates a fail-closed state.",
+      "additionalProperties": false,
+      "properties": {
+        "triggered": {
+          "type": "boolean",
+          "description": "Indicates whether the fail-closed mechanism was triggered for this event."
+        },
+        "reason_code": {
+          "type": "string",
+          "enum": [
+            "not_triggered",
+            "insufficient_data",
+            "data_quality_failure",
+            "model_uncertainty_exceeded",
+            "legal_basis_unclear",
+            "fundamental_rights_risk",
+            "discrimination_risk_detected",
+            "privacy_risk_detected",
+            "cybersecurity_incident",
+            "integrity_breach_suspected",
+            "oversight_body_intervention",
+            "human_validator_unavailable",
+            "policy_violation",
+            "other"
+          ],
+          "description": "Controlled reason for invoking fail-closed behavior."
+        },
+        "reason_description_reference": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Reference, URI, or document ID to a structured human-readable explanation of the fail-closed decision."
+        }
+      },
+      "required": [
+        "triggered",
+        "reason_code"
+      ]
+    },
+    "procurement_decision_effect": {
+      "type": "string",
+      "enum": [
+        "no_effect_advisory_only",
+        "recommendation_to_human_reviewer",
+        "supplier_shortlisted",
+        "supplier_excluded_subject_to_human_review",
+        "tender_proceeds",
+        "tender_suspended",
+        "tender_cancelled",
+        "award_recommended",
+        "award_blocked_pending_review",
+        "contract_modification_flagged",
+        "referred_to_oversight_body",
+        "fail_closed_no_decision_issued"
+      ],
+      "description": "Effect of the AI-supported procurement event on the procurement procedure. Exclusionary or adverse effects must always be subject to human review and contestability; AI must never autonomously exclude a supplier."
+    }
+  },
+  "required": [
+    "procurement_case_id",
+    "tender_reference",
+    "supplier_reference",
+    "procurement_stage",
+    "risk_indicator",
+    "compliance_score",
+    "conflict_of_interest_flag",
+    "procurement_integrity_status",
+    "human_procurement_validation",
+    "oversight_body_status",
+    "appeal_or_contestation_status",
+    "audit_trail_reference",
+    "fail_closed_procurement_reason",
+    "procurement_decision_effect"
+  ]
+}
