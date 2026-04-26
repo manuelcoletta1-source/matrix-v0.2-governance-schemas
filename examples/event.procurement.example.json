@@ -1,0 +1,101 @@
+{
+  "core_event": {
+    "schema_version": "matrix-v0.2-core",
+    "event_id": "9d7f4a8c-2b6e-4f1a-9c31-8e5d0b7a1234",
+    "event_timestamp": "2025-01-03T14:45:00Z",
+    "domain_extension": "procurement",
+    "canonicalization_method": "JCS-RFC8785",
+    "hash_algorithm": "SHA-256",
+    "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "trace_hash": "c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f70819",
+    "AI_system_used": {
+      "system_id": "research-procurement-review-assistant-001",
+      "version": "test-version",
+      "provider": "research-provider",
+      "role": "assistive"
+    },
+    "input_reference": "ref://institution/procurement/case/2025/0001/input",
+    "output_reference": "ref://institution/procurement/case/2025/0001/output",
+    "human_validation": {
+      "validated": true,
+      "validator_id": "role-procurement-officer-A",
+      "validation_timestamp": "2025-01-03T15:05:00Z",
+      "validation_notes_reference": "ref://institution/procurement/case/2025/0001/validation"
+    },
+    "retention_requirement": {
+      "retention_period_days": 3650,
+      "legal_basis": "institutional-procurement-retention-policy",
+      "disposal_action": "archive"
+    },
+    "drift_indicator": {
+      "drift_detected": false,
+      "drift_type": "none",
+      "drift_score": 0,
+      "detection_method_reference": "ref://institution/procurement/drift-monitoring/not-applicable"
+    },
+    "fail_closed": {
+      "enabled": true,
+      "triggered": false,
+      "reason": "none"
+    },
+    "audit_status": "pending",
+    "escalation_status": "none",
+    "responsibility_owner": {
+      "owner_id": "role-procurement-officer-A",
+      "owner_role": "procurement_officer",
+      "organisation": "research-institution-placeholder"
+    }
+  },
+  "procurement_extension": {
+    "procurement_case_id": "8c6a9a21-1c2f-4d7e-9a8b-001122334455",
+    "tender_reference": "TENDER-2025-0001",
+    "supplier_reference": "SUPPLIER-REF-001",
+    "procurement_stage": "tender_evaluation",
+    "risk_indicator": {
+      "risk_level": "moderate",
+      "risk_categories": [
+        "abnormally_low_offer",
+        "technical_capacity_gap"
+      ],
+      "explanation_reference": "ref://institution/procurement/case/2025/0001/risk-explanation"
+    },
+    "compliance_score": {
+      "score_value": 0.76,
+      "score_scale": "normalized_0_1",
+      "compliance_status": "minor_deviation",
+      "legal_basis_reference": [
+        "institutional-procurement-rulebook",
+        "applicable-public-procurement-framework"
+      ]
+    },
+    "conflict_of_interest_flag": {
+      "status": "none_detected",
+      "role_reference": "NOT_APPLICABLE",
+      "mitigation_measure": "NOT_APPLICABLE"
+    },
+    "procurement_integrity_status": "integrity_under_review",
+    "human_procurement_validation": {
+      "validation_status": "validated_with_modifications",
+      "validator_role": "procurement_officer",
+      "validation_timestamp": "2025-01-03T15:05:00Z",
+      "validation_notes_reference": "ref://institution/procurement/case/2025/0001/human-validation"
+    },
+    "oversight_body_status": {
+      "status": "not_required",
+      "oversight_body_reference": "NOT_APPLICABLE",
+      "decision_reference": "NOT_APPLICABLE"
+    },
+    "appeal_or_contestation_status": {
+      "status": "no_appeal",
+      "appeal_reference": "NOT_APPLICABLE",
+      "remedy_applied": "none"
+    },
+    "audit_trail_reference": "ref://institution/procurement/case/2025/0001/audit-trail",
+    "fail_closed_procurement_reason": {
+      "triggered": false,
+      "reason_code": "not_triggered",
+      "reason_description_reference": "NOT_APPLICABLE"
+    },
+    "procurement_decision_effect": "recommendation_to_human_reviewer"
+  }
+}
