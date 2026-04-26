@@ -1,0 +1,47 @@
+{
+  "schema_version": "matrix-v0.2-core",
+  "event_id": "550e8400-e29b-41d4-a716-446655440000",
+  "event_timestamp": "2025-01-01T09:15:00Z",
+  "domain_extension": "generic",
+  "canonicalization_method": "JCS-RFC8785",
+  "hash_algorithm": "SHA-256",
+  "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "trace_hash": "a3f1c4d2e5b6a7980c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b",
+  "AI_system_used": {
+    "system_id": "research-llm-ref-001",
+    "version": "test-version",
+    "provider": "research-provider",
+    "role": "assistive"
+  },
+  "input_reference": "ref://institution/case/2025/0001/input",
+  "output_reference": "ref://institution/case/2025/0001/output",
+  "human_validation": {
+    "validated": true,
+    "validator_id": "role-case-officer-A",
+    "validation_timestamp": "2025-01-01T09:20:00Z",
+    "validation_notes_reference": "ref://institution/case/2025/0001/validation"
+  },
+  "retention_requirement": {
+    "retention_period_days": 1825,
+    "legal_basis": "institutional-research-retention-policy",
+    "disposal_action": "review"
+  },
+  "drift_indicator": {
+    "drift_detected": false,
+    "drift_type": "none",
+    "drift_score": 0,
+    "detection_method_reference": "ref://institution/drift-monitoring/not-applicable"
+  },
+  "fail_closed": {
+    "enabled": true,
+    "triggered": false,
+    "reason": "none"
+  },
+  "audit_status": "pending",
+  "escalation_status": "none",
+  "responsibility_owner": {
+    "owner_id": "role-case-officer-A",
+    "owner_role": "case_officer",
+    "organisation": "research-institution-placeholder"
+  }
+}
