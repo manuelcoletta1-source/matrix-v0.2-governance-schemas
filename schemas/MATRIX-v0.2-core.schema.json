@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matrix.eu/schemas/MATRIX-v0.2-core.schema.json",
+  "title": "MATRIX Core Event Schema v0.2",
+  "description": "Core schema for MATRIX verifiable AI governance event records. Defines the minimal traceable, auditable, and responsibility-preserving event structure for institutional, procurement, and cyber-incident domains. Privacy-by-design: only references, identifiers, URIs, or cryptographic hashes are permitted in input/output fields; raw personal data MUST NOT be embedded.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "matrix-v0.2-core",
+      "description": "Constant identifier of the MATRIX schema version used to produce this event record."
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique event identifier. UUIDv7 is recommended to ensure time-ordered replay consistency and deterministic event-chain reconstruction across distributed audit logs."
+    },
+    "event_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 / ISO 8601 timestamp in UTC marking the moment the event was generated."
+    },
+    "domain_extension": {
+      "type": "string",
+      "enum": [
+        "generic",
+        "institutional",
+        "cyber_incident",
+        "procurement"
+      ],
+      "description": "Governance domain to which this event belongs. Determines applicable extension profile and audit obligations."
+    },
+    "canonicalization_method": {
+      "type": "string",
+      "enum": [
+        "JCS-RFC8785"
+      ],
+      "description": "Canonicalization method applied to the event payload before hashing. JCS / RFC 8785 ensures deterministic JSON serialization for reproducible hash verification."
+    },
+    "hash_algorithm": {
+      "type": "string",
+      "enum": [
+        "SHA-256",
+        "SHA-512",
+        "BLAKE3"
+      ],
+      "description": "Cryptographic hash algorithm used to compute previous_event_hash and trace_hash."
+    },
+    "previous_event_hash": {
+      "type": "string",
+      "description": "Hash of the previous event in the chain, computed using the declared canonicalization_method and hash_algorithm. Enables tamper-evident event chaining. For genesis events, an all-zero digest of the algorithm length MUST be used.",
+      "minLength": 32,
+      "maxLength": 256
+    },
+    "trace_hash": {
+      "type": "string",
+      "description": "Hash of the canonicalized current event payload, excluding the trace_hash field itself, computed using the declared canonicalization_method and hash_algorithm. Anchors the event in the verifiable trace.",
+      "minLength": 32,
+      "maxLength": 256
+    },
+    "AI_system_used": {
+      "type": "object",
+      "description": "Identification of the AI system or model involved in generating, supporting, or processing the event. Decision-making authority remains with the human responsibility_owner.",
+      "additionalProperties": false,
+      "properties": {
+        "system_id": {
+          "type": "string",
+          "description": "Stable identifier of the AI system, model, or service."
+        },
+        "version": {
+          "type": "string",
+          "description": "Version, build, or model revision used at event time."
+        },
+        "provider": {
+          "type": "string",
+          "description": "Organisation or vendor responsible for the AI system."
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "assistive",
+            "advisory",
+            "monitoring",
+            "none"
+          ],
+          "description": "Functional role of the AI system in this event. Public authority decisions MUST NOT be fully automated."
+        }
+      },
+      "required": [
+        "system_id",
+        "version",
+        "role"
+      ]
+    },
+    "input_reference": {
+      "type": "string",
+      "description": "Reference, identifier, URI, or cryptographic hash pointing to the input artefact. Privacy-by-design: MUST NOT contain raw personal, sensitive, or otherwise identifying data.",
+      "minLength": 1
+    },
+    "output_reference": {
+      "type": "string",
+      "description": "Reference, identifier, URI, or cryptographic hash pointing to the output artefact. Privacy-by-design: MUST NOT contain raw personal, sensitive, or otherwise identifying data.",
+      "minLength": 1
+    },
+    "human_validation": {
+      "type": "object",
+      "description": "Record of mandatory human oversight applied to this event. Preserves human-in-the-loop accountability.",
+      "additionalProperties": false,
+      "properties": {
+        "validated": {
+          "type": "boolean",
+          "description": "Indicates whether a competent human validated the event or its underlying decision."
+        },
+        "validator_id": {
+          "type": "string",
+          "description": "Pseudonymous or institutional identifier of the validating human. MUST NOT contain raw personal data."
+        },
+        "validation_timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp of the human validation act."
+        },
+        "validation_notes_reference": {
+          "type": "string",
+          "description": "Reference, URI, or hash pointing to validation notes or rationale. MUST NOT embed raw content."
+        }
+      },
+      "required": [
+        "validated"
+      ]
+    },
+    "retention_requirement": {
+      "type": "object",
+      "description": "Data retention policy applicable to this event record.",
+      "additionalProperties": false,
+      "properties": {
+        "retention_period_days": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Mandatory retention period in days, derived from applicable legal or institutional obligation."
+        },
+        "legal_basis": {
+          "type": "string",
+          "description": "Legal or regulatory basis grounding the retention requirement."
+        },
+        "disposal_action": {
+          "type": "string",
+          "enum": [
+            "secure_delete",
+            "archive",
+            "anonymize",
+            "review"
+          ],
+          "description": "Action to be taken at the end of the retention period."
+        }
+      },
+      "required": [
+        "retention_period_days",
+        "legal_basis"
+      ]
+    },
+    "drift_indicator": {
+      "type": "object",
+      "description": "Indicator of model, behavioural, or distributional drift relevant to the AI system used.",
+      "additionalProperties": false,
+      "properties": {
+        "drift_detected": {
+          "type": "boolean",
+          "description": "Whether drift was detected at event time."
+        },
+        "drift_type": {
+          "type": "string",
+          "enum": [
+            "none",
+            "data",
+            "concept",
+            "performance",
+            "behavioural",
+            "other"
+          ],
+          "description": "Category of detected drift."
+        },
+        "drift_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Quantitative drift score, where applicable."
+        },
+        "detection_method_reference": {
+          "type": "string",
+          "description": "Reference, URI, or hash pointing to the drift detection method or report."
+        }
+      },
+      "required": [
+        "drift_detected"
+      ]
+    },
+    "fail_closed": {
+      "type": "object",
+      "description": "Fail-closed governance state. When integrity, validation, or oversight conditions are not met, the system MUST default to a non-permissive closed state.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether fail-closed governance is enforced for this event."
+        },
+        "triggered": {
+          "type": "boolean",
+          "description": "Whether the fail-closed state was triggered during this event."
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason or condition that triggered the fail-closed state, if applicable."
+        }
+      },
+      "required": [
+        "enabled",
+        "triggered"
+      ]
+    },
+    "audit_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "in_review",
+        "verified",
+        "rejected",
+        "not_applicable"
+      ],
+      "description": "Current audit status of the event record."
+    },
+    "escalation_status": {
+      "type": "string",
+      "enum": [
+        "none",
+        "flagged",
+        "escalated",
+        "resolved",
+        "withdrawn"
+      ],
+      "description": "Escalation lifecycle state for incidents, anomalies, or contested events."
+    },
+    "responsibility_owner": {
+      "type": "object",
+      "description": "Human or institutional entity bearing legal and operational responsibility for this event. Responsibility MUST remain attributable to a human or accountable institution.",
+      "additionalProperties": false,
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "description": "Pseudonymous or institutional identifier of the responsible party."
+        },
+        "owner_role": {
+          "type": "string",
+          "description": "Institutional role or function of the responsibility owner."
+        },
+        "organisation": {
+          "type": "string",
+          "description": "Public authority, agency, or accountable institution."
+        }
+      },
+      "required": [
+        "owner_id",
+        "organisation"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_timestamp",
+    "domain_extension",
+    "canonicalization_method",
+    "hash_algorithm",
+    "previous_event_hash",
+    "trace_hash",
+    "AI_system_used",
+    "input_reference",
+    "output_reference",
+    "human_validation",
+    "retention_requirement",
+    "drift_indicator",
+    "fail_closed",
+    "audit_status",
+    "escalation_status",
+    "responsibility_owner"
+  ]
+}
