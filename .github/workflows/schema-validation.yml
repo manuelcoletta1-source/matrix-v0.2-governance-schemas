@@ -1,0 +1,37 @@
+name: MATRIX Schema Validation
+
+on:
+  push:
+    paths:
+      - "schemas/**"
+      - "examples/**"
+      - ".github/workflows/schema-validation.yml"
+  pull_request:
+    paths:
+      - "schemas/**"
+      - "examples/**"
+      - ".github/workflows/schema-validation.yml"
+  workflow_dispatch:
+
+jobs:
+  schema-validation-placeholder:
+    name: Schema validation placeholder
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: MATRIX v0.2 validation status
+        run: |
+          echo "MATRIX v0.2 schema validation workflow placeholder"
+          echo "This workflow reserves the CI path for future JSON Schema validation."
+          echo "Planned validation steps:"
+          echo "1. Validate MATRIX-v0.2-core.schema.json"
+          echo "2. Validate MATRIX-v0.2-cyber.ext.schema.json"
+          echo "3. Validate MATRIX-v0.2-procurement.ext.schema.json"
+          echo "4. Validate example records"
+          echo "5. Verify canonicalization and hash-chain integrity"
+          echo "6. Verify fail-closed governance fields"
+          echo "7. Verify human validation and responsibility ownership"
+          echo "Current status: placeholder only."
