@@ -1,0 +1,66 @@
+{
+  "core_event": {
+    "schema_version": "matrix-v0.2-core",
+    "event_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "event_timestamp": "2025-01-02T11:30:00Z",
+    "domain_extension": "cyber_incident",
+    "canonicalization_method": "JCS-RFC8785",
+    "hash_algorithm": "SHA-256",
+    "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "trace_hash": "b4e2d5c7f8a90123d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8091a2b3c4d5e6f7081",
+    "AI_system_used": {
+      "system_id": "research-cyber-triage-assistant-001",
+      "version": "test-version",
+      "provider": "research-provider",
+      "role": "assistive"
+    },
+    "input_reference": "ref://institution/cyber/incident/2025/0001/input",
+    "output_reference": "ref://institution/cyber/incident/2025/0001/output",
+    "human_validation": {
+      "validated": true,
+      "validator_id": "role-soc-analyst-A",
+      "validation_timestamp": "2025-01-02T11:38:00Z",
+      "validation_notes_reference": "ref://institution/cyber/incident/2025/0001/validation"
+    },
+    "retention_requirement": {
+      "retention_period_days": 1825,
+      "legal_basis": "institutional-cyber-incident-retention-policy",
+      "disposal_action": "archive"
+    },
+    "drift_indicator": {
+      "drift_detected": false,
+      "drift_type": "none",
+      "drift_score": 0,
+      "detection_method_reference": "ref://institution/cyber/drift-monitoring/not-applicable"
+    },
+    "fail_closed": {
+      "enabled": true,
+      "triggered": false,
+      "reason": "none"
+    },
+    "audit_status": "pending",
+    "escalation_status": "flagged",
+    "responsibility_owner": {
+      "owner_id": "role-soc-supervisor-A",
+      "owner_role": "soc_supervisor",
+      "organisation": "research-institution-placeholder"
+    }
+  },
+  "cyber_extension": {
+    "incident_id": "INC-2025-0001",
+    "alert_source": "SIEM",
+    "incident_severity": "MEDIUM",
+    "confidence_score": 0.82,
+    "threat_vector": "PHISHING",
+    "affected_services": [
+      "SERVICE-CATALOG-001"
+    ],
+    "regulatory_report_status": "PENDING_ASSESSMENT",
+    "containment_action_reference": "PENDING",
+    "communication_status": "INTERNAL_NOTIFIED",
+    "SOC_validation": "VALIDATED_TRUE_POSITIVE",
+    "CSIRT_notification_status": "PENDING",
+    "post_incident_review_reference": "PENDING",
+    "fail_closed_cyber_reason": "NOT_TRIGGERED"
+  }
+}
