@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: MATRIX v0.2 Security Policy
+    url: https://github.com/manuelcoletta1-source/MATRIX-v0.2-research-schemas-for-verifiable/blob/main/SECURITY.md
+    about: Read the responsible-use and security policy before reporting security-sensitive concerns.
+  - name: MATRIX v0.2 Contribution Guidelines
+    url: https://github.com/manuelcoletta1-source/MATRIX-v0.2-research-schemas-for-verifiable/blob/main/CONTRIBUTING.md
+    about: Read the contribution guidelines before proposing schema, documentation, or example changes.
+  - name: MATRIX v0.2 Technical Note
+    url: https://github.com/manuelcoletta1-source/MATRIX-v0.2-research-schemas-for-verifiable/blob/main/docs/MATRIX-v0.2-Technical-Note.md
+    about: Review the technical note for the schema architecture, governance model, and research status.
