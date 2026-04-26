@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this research schema package, please cite it using the metadata below."
+title: "MATRIX v0.2 — Verifiable AI Governance Schemas"
+version: "0.2.0"
+date-released: "2026-04-26"
+type: software
+abstract: "MATRIX v0.2 is a research-stage JSON Schema package for traceability-by-construction in AI-assisted institutional environments. It defines a core event schema and domain extensions for cyber incident triage and public procurement review, supporting verifiable AI governance, institutional traceability, fail-closed governance, human validation, and responsibility-preserving event records."
+authors:
+  - family-names: "Coletta"
+    given-names: "Manuel"
+    affiliation: "HBCE Research · HERMETICUM B.C.E. S.r.l."
+repository-code: "https://github.com/manuelcoletta1-source/MATRIX-v0.2-research-schemas-for-verifiable"
+keywords:
+  - "AI governance"
+  - "verifiable AI"
+  - "institutional traceability"
+  - "JSON Schema"
+  - "fail-closed governance"
+  - "public-sector AI"
+  - "cyber resilience"
+  - "procurement integrity"
+  - "responsibility-preserving infrastructure"
+license: MIT
