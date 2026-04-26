@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matrix.eu/schemas/MATRIX-v0.2-cyber.ext.schema.json",
+  "title": "MATRIX Cyber Incident Domain Extension v0.2",
+  "description": "Domain extension for the MATRIX Core Event Schema v0.2 supporting AI-assisted public-sector cybersecurity incident triage. Activated when the core field domain_extension equals cyber_incident. Designed to preserve cyber resilience, institutional accountability, traceability, auditability, fail-closed governance, and public-sector continuity. Privacy-by-design: no raw personal data, no exploit payloads, no malware artefacts, no offensive cyber content.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "description": "Unique non-personal institutional identifier of the cyber incident, traceable to the issuing SOC or CSIRT case management system. Must not contain personal data.",
+      "pattern": "^[A-Z0-9][A-Z0-9_\\-:.]{3,63}$"
+    },
+    "alert_source": {
+      "type": "string",
+      "description": "Controlled high-level category identifying the originating detection or alerting system that generated the incident signal.",
+      "enum": [
+        "SIEM",
+        "EDR",
+        "NDR",
+        "IDS_IPS",
+        "SOC_ANALYST",
+        "CSIRT_ANALYST",
+        "AI_TRIAGE_ASSISTANT",
+        "EXTERNAL_CERT",
+        "THREAT_INTEL_FEED",
+        "USER_REPORT",
+        "AUTOMATED_HEALTH_CHECK",
+        "OTHER"
+      ]
+    },
+    "incident_severity": {
+      "type": "string",
+      "description": "Institutional severity classification of the incident based on impact, scope, and continuity risk to public-sector services.",
+      "enum": [
+        "INFORMATIONAL",
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "confidence_score": {
+      "type": "number",
+      "description": "Normalized confidence score in the range 0.0 to 1.0 expressing the AI triage assistant's or analyst's confidence that the event constitutes a genuine cyber incident. Advisory only; does not replace human judgment.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "threat_vector": {
+      "type": "string",
+      "description": "High-level threat category only. Must not contain exploit details, malware code, payloads, or operational offensive content.",
+      "enum": [
+        "PHISHING",
+        "MALWARE",
+        "RANSOMWARE",
+        "DENIAL_OF_SERVICE",
+        "UNAUTHORISED_ACCESS",
+        "INSIDER_THREAT",
+        "SUPPLY_CHAIN",
+        "MISCONFIGURATION",
+        "DATA_LEAK",
+        "CREDENTIAL_COMPROMISE",
+        "PHYSICAL_TAMPERING",
+        "UNKNOWN",
+        "OTHER"
+      ]
+    },
+    "affected_services": {
+      "type": "array",
+      "description": "List of impacted public-sector services expressed exclusively as institutional references or identifiers. Must not contain hostnames, IP addresses, raw technical artefacts, or personal data.",
+      "items": {
+        "type": "string",
+        "description": "Opaque institutional reference or registry identifier of an affected service, such as a service catalogue ID or ministry service code.",
+        "pattern": "^[A-Z0-9][A-Z0-9_\\-:.]{2,127}$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "regulatory_report_status": {
+      "type": "string",
+      "description": "Status of mandatory regulatory reporting obligations, such as NIS2, GDPR breach notification, or sectoral CSIRT obligations. Reflects only the procedural status, not regulatory content.",
+      "enum": [
+        "NOT_APPLICABLE",
+        "PENDING_ASSESSMENT",
+        "ASSESSMENT_IN_PROGRESS",
+        "REPORTABLE_NOT_YET_SUBMITTED",
+        "SUBMITTED",
+        "ACKNOWLEDGED_BY_AUTHORITY",
+        "CLOSED",
+        "WITHDRAWN"
+      ]
+    },
+    "containment_action_reference": {
+      "type": "string",
+      "description": "Opaque reference identifier to a containment action recorded in the institutional response playbook or case management system. Must not include technical execution details, commands, or offensive instructions. Use PENDING or NOT_APPLICABLE when no containment action has been recorded yet.",
+      "pattern": "^(PENDING|NOT_APPLICABLE|[A-Z0-9][A-Z0-9_\\-:.]{2,127})$"
+    },
+    "communication_status": {
+      "type": "string",
+      "description": "Status of internal and external institutional communication regarding the incident, supporting transparency and public-sector continuity.",
+      "enum": [
+        "NOT_STARTED",
+        "INTERNAL_NOTIFIED",
+        "STAKEHOLDERS_NOTIFIED",
+        "PUBLIC_COMMUNICATION_ISSUED",
+        "ON_HOLD",
+        "CLOSED"
+      ]
+    },
+    "SOC_validation": {
+      "type": "string",
+      "description": "Human SOC analyst validation status of the AI-assisted triage outcome. Mandatory human-in-the-loop checkpoint; AI output is advisory only.",
+      "enum": [
+        "PENDING",
+        "VALIDATED_TRUE_POSITIVE",
+        "VALIDATED_FALSE_POSITIVE",
+        "VALIDATED_BENIGN",
+        "ESCALATED_TO_CSIRT",
+        "REJECTED",
+        "REQUIRES_FURTHER_REVIEW"
+      ]
+    },
+    "CSIRT_notification_status": {
+      "type": "string",
+      "description": "Status of notification to the responsible CSIRT or CERT entity for coordination, escalation, or cross-institutional response.",
+      "enum": [
+        "NOT_REQUIRED",
+        "PENDING",
+        "NOTIFIED",
+        "ACKNOWLEDGED",
+        "COORDINATING",
+        "CLOSED"
+      ]
+    },
+    "post_incident_review_reference": {
+      "type": "string",
+      "description": "Opaque reference identifier to the post-incident review or lessons-learned record archived in the institutional governance repository. Use PENDING or NOT_APPLICABLE when no post-incident review has been created yet.",
+      "pattern": "^(PENDING|NOT_APPLICABLE|[A-Z0-9][A-Z0-9_\\-:.]{2,127})$"
+    },
+    "fail_closed_cyber_reason": {
+      "type": "string",
+      "description": "Controlled rationale for triggering a fail-closed response in the cyber domain when AI triage confidence, validation, oversight, or institutional preconditions are insufficient. Ensures that, in case of doubt, the system halts AI-assisted decisioning and defers to human authority.",
+      "enum": [
+        "NOT_TRIGGERED",
+        "LOW_CONFIDENCE_SCORE",
+        "MISSING_SOC_VALIDATION",
+        "MISSING_CSIRT_NOTIFICATION",
+        "CONFLICTING_SIGNALS",
+        "INCOMPLETE_TRACEABILITY",
+        "REGULATORY_UNCERTAINTY",
+        "HUMAN_OVERSIGHT_UNAVAILABLE",
+        "INTEGRITY_VIOLATION_DETECTED",
+        "CONTINUITY_RISK_TO_PUBLIC_SERVICE",
+        "POLICY_VIOLATION",
+        "OTHER"
+      ]
+    }
+  },
+  "required": [
+    "incident_id",
+    "alert_source",
+    "incident_severity",
+    "confidence_score",
+    "threat_vector",
+    "affected_services",
+    "regulatory_report_status",
+    "communication_status",
+    "SOC_validation",
+    "CSIRT_notification_status",
+    "fail_closed_cyber_reason"
+  ]
+}
